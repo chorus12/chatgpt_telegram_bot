@@ -22,7 +22,7 @@ services:
     image: traefik:v2.9
     ports:
       - "80:80"
-      - "844"3:443"
+      - "8443:443"
       - ./config/traefik.toml:/etc/traefik/traefik.toml
       - ./config/acme.json:/acme.json
     labels:
