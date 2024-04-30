@@ -18,6 +18,9 @@ services:
     build:
       context: "."
       dockerfile: Dockerfile
+    volumes:
+      - ${PWD}/config/config.yml:/code/config/config.yml:ro
+      - ${PWD}/config/chat_modes.yml:/code/config/chat_modes.yml:ro
     depends_on:
       - mongo
 
