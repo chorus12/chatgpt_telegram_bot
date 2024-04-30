@@ -5,8 +5,8 @@ services:
     container_name: mongo
     image: mongo:latest
     restart: always
-    ports:
-      - ${MONGODB_PORT:-27017}:${MONGODB_PORT:-27017}
+    # ports:
+    #   - ${MONGODB_PORT:-27017}:${MONGODB_PORT:-27017}
     volumes:
       - ${MONGODB_PATH:-./mongodb}:/data/db
     # TODO: add auth

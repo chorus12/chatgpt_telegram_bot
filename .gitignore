@@ -133,3 +133,7 @@ config/config.yml
 config/config.env
 
 docker-compose.dev.yml
+litellm-config.yml
+deploy/deploy-configs.yml
+deploy/deploy.yml
+deploy/inventory.yml

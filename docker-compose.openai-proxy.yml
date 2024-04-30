@@ -1,0 +1,34 @@
+services:
+  litellm:
+    build:
+      context: .
+      args:
+        target: runtime
+    image: ghcr.io/berriai/litellm:main-latest
+    environment:
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+      # postgresql://<user>:<password>@<host>:<port>/<dbname>
+      # - DATABASE_URL=${DATABASE_URL}
+    volumes:
+      - ./config/litellm-config.yml:/app/config.yml
+    command: [ "--config", "/app/config.yml", "--port", "4000", "--num_workers", "2" ]
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.litellm.rule=Host(${TARGET_DOMAIN})"
+      - "traefik.http.routers.litellm.entrypoints=websecure"
+      - "traefik.http.routers.litellm.tls.certresolver=letsencrypt"
+
+  traefik:
+    image: traefik:v2.9
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./config/traefik.toml:/etc/traefik/traefik.toml
+      - ./config/acme.json:/acme.json
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.traefik.rule=Host(`traefik.your-domain.com`)"
+      - "traefik.http.routers.traefik.service=api@internal"
+      - "traefik.http.routers.traefik.entrypoints=websecure"
+      - "traefik.http.routers.traefik.tls.certresolver=letsencrypt"
