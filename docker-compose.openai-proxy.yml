@@ -11,7 +11,7 @@ services:
     command: [ "--config", "/app/config.yml", "--port", "4000", "--num_workers", "2" ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.litellm.rule=Host(${TARGET_DOMAIN:-aurora.bodbe.ru})"
+      - "traefik.http.routers.litellm.rule=Host(${TARGET_DOMAIN})"
       - "traefik.http.routers.litellm.entrypoints=websecure"
       - "traefik.http.routers.litellm.tls.certresolver=letsencrypt"
 
