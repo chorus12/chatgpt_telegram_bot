@@ -3,7 +3,7 @@ services:
   litellm:
     image: ghcr.io/berriai/litellm:main-latest
     environment:
-      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY}
+      - LITELLM_MASTER_KEY=${LITELLM_MASTER_KEY:-12345}
       # postgresql://<user>:<password>@<host>:<port>/<dbname>
       # - DATABASE_URL=${DATABASE_URL}
     volumes:
@@ -11,7 +11,7 @@ services:
     command: [ "--config", "/app/config.yml", "--port", "4000", "--num_workers", "2" ]
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.litellm.rule=Host(${TARGET_DOMAIN})"
+      - "traefik.http.routers.litellm.rule=Host(${TARGET_DOMAIN:-aurora.bodbe.ru})"
       - "traefik.http.routers.litellm.entrypoints=websecure"
       - "traefik.http.routers.litellm.tls.certresolver=letsencrypt"
 
@@ -20,6 +20,7 @@ services:
     ports:
       - "80:80"
       - "8443:443"
+    volumes:
       - ./config/traefik.toml:/etc/traefik/traefik.toml
       - ./config/acme.json:/acme.json
     labels:
